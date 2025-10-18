@@ -1,0 +1,13 @@
+# Ignore compiled files
+*.exe
+*.o
+*.out
+
+# Ignore temporary files
+*.log
+*.tmp
+
+# VS Code settings and build stuff
+.vscode/
+build/
+debug/
