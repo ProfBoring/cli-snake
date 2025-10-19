@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
+#include <ctype.h>
 int width = 30;
 int height = 30;
 int x_snake = 10;   // initial snake X
 int y_snake = 5;    // initial snake Y
 char dir = 'd';     // initial direction: 'w','a','s','d'
-int isRunning = 1;
+int isRunning = 1;  //game state variable
+int again=0;       //replay variable
 void drawGame(int width, int height)
 {
 //creating top boundary
@@ -31,8 +33,8 @@ void drawGame(int width, int height)
     printf("\n");}
 
 void gameInput(){
-    if( _kbhit()){
-        char key=_getch();
+    if( _kbhit()){              //_kbhit() is a function from conio.h which waits for input without pausing the rest of the program
+        char key=_getch();      //similarly _getch() is from conio.h the input doesnt echo or appear on tnhe command line
         switch(key){
         case 'w': dir = 'w'; break;
         case 'a': dir = 'a'; break;
@@ -43,7 +45,7 @@ void gameInput(){
 }
 void logic() {
     switch (dir) {
-        case 'w': y_snake--; break;
+        case 'w': y_snake--; break;    //remember, the origin (0,0) is at the top left, so to increase y coord we must head downwards
         case 's': y_snake++; break;
         case 'a': x_snake--; break;
         case 'd': x_snake++; break;
@@ -55,14 +57,35 @@ void logic() {
 }
 
 int main(){
-    while (isRunning) {
-        drawGame(width, height);
-        gameInput();
-        logic();
-        Sleep(500);
-        system("cls"); // Clear screen for next frame
+    char again;
+    do
+    {x_snake=10;
+     y_snake=5;
+     dir='d';
+     isRunning=1;
+    
+    while(isRunning==1){
+        drawGame(width,height);
+     gameInput();
+     logic();
+     Sleep(150);
+     system("cls"); //clears the console after each frame (windows specific)
     }
+    //retry?
+    printf("Game Over!\n");
+    printf("enter 'Q' to quit or 'R' to retry\n");
+
+    do
+    {
+        again=_getch();
+        again=tolower(again); //tolower makes it case-insensitive
+    } while(again!='r' && again!='q');
+    }while(again=='r');
+
+ printf("Thanks for playing!\n");
+ return 0;   
 }
+
 
 
 
